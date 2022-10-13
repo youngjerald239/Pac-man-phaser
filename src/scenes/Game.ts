@@ -3,7 +3,7 @@ import Hero from '../game/Hero'
 
 import { createHeroAnims } from '../game/HeroAnims'
 import '../game/Hero'
-import HeroAI from '~/game/HeroAI'
+
 
 
 export default class Game extends Phaser.Scene
@@ -60,7 +60,7 @@ export default class Game extends Phaser.Scene
 		createHeroAnims(this.anims)
 
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
-		
+
 		if (this.hero)
 		{
 			this.physics.add.overlap(this.hero, dots, this.handlePlayerEatDot, this.processPlayerEatDot, this)
