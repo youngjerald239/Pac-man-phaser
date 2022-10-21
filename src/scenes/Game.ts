@@ -13,6 +13,7 @@ import FlankHeroAI from '../game/ghost-ai/FlankHeroAI'
 import PlayfullyChaseHeroAI from '../game/ghost-ai/PlayfullyChaseHeroAI'
 import HeroAI from '../game/HeroAI'
 import Ghost from '../game/Ghost'
+import NewGhost from '../game/ghost-ai/NewGhost'
 
 export default class Game extends Phaser.Scene
 {
@@ -70,7 +71,12 @@ export default class Game extends Phaser.Scene
 
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
 
-		this.createGhosts()
+		const ghost = new NewGhost(this, 256, 256)
+		this.add.existing(ghost)
+
+		ghost.makeRed()
+
+		// this.createGhosts()
 
 		if (this.hero)
 		{
