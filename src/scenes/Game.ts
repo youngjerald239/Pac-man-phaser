@@ -11,7 +11,7 @@ import ChaseHeroAI from '../game/ghost-ai/ChaseHeroAI'
 import InterceptHeroAI from '../game/ghost-ai/InterceptHeroAI'
 import FlankHeroAI from '../game/ghost-ai/FlankHeroAI'
 import PlayfullyChaseHeroAI from '../game/ghost-ai/PlayfullyChaseHeroAI'
-import HeroAI from '~/game/HeroAI'
+import HeroAI from '../game/HeroAI'
 import Ghost from '../game/Ghost'
 
 export default class Game extends Phaser.Scene
