@@ -71,7 +71,7 @@ export default class Game extends Phaser.Scene
 
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
 
-		const ghost = new NewGhost(this, 256, 256)
+		const ghost = new NewGhost(this, 256, 256, this.boardLayer)
 		this.add.existing(ghost)
 
 		ghost.makeRed()
