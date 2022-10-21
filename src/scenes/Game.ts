@@ -2,9 +2,17 @@ import Phaser from 'phaser'
 import Hero from '../game/Hero'
 
 import { createHeroAnims } from '../game/HeroAnims'
+import { createGhostAnims } from '../game/GhostAnims'
 import '../game/Hero'
+import '../game/Ghost'
 
-
+import ScatterAI from '../game/ghost-ai/ScatterAI'
+import ChaseHeroAI from '../game/ghost-ai/ChaseHeroAI'
+import InterceptHeroAI from '../game/ghost-ai/InterceptHeroAI'
+import FlankHeroAI from '../game/ghost-ai/FlankHeroAI'
+import PlayfullyChaseHeroAI from '../game/ghost-ai/PlayfullyChaseHeroAI'
+import HeroAI from '~/game/HeroAI'
+import Ghost from '../game/Ghost'
 
 export default class Game extends Phaser.Scene
 {
@@ -58,8 +66,11 @@ export default class Game extends Phaser.Scene
 		})
 
 		createHeroAnims(this.anims)
+		createGhostAnims(this.anims)
 
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
+
+		this.createGhosts()
 
 		if (this.hero)
 		{
@@ -98,6 +109,35 @@ export default class Game extends Phaser.Scene
 			this.hero.handleMovement(dt, this.cursors, this.boardLayer)
 		}
 	}
+
+	private createGhosts() {
+		const blinky = this.add.ghost(256, 256)
+			.makeRed()
+			.enableTargetMarker(true)
+		blinky.setAI(new ChaseHeroAI(this.hero!, blinky, this.boardLayer!))
+
+		const pinky = this.add.ghost(224, 256)
+			.makePink()
+			.enableTargetMarker(true)
+		pinky.setAI(new InterceptHeroAI(this.hero!, pinky, this.boardLayer!, true))
+
+		const inky = this.add.ghost(288, 256)
+			.makeTeal()
+			.enableTargetMarker(true)
+		inky.setAI(new FlankHeroAI(this.hero!, inky, blinky, this.boardLayer!, true))
+
+		const clyde = this.add.ghost(320, 256)
+			.makeOrange()
+			.enableTargetMarker(true)
+
+		clyde.setAI(new PlayfullyChaseHeroAI(
+			this.hero!,
+			clyde,
+			this.boardLayer!,
+			new ScatterAI(16, this.boardLayer!.height - 16, clyde, this.boardLayer!)
+		))
+	}
+
 
 	private createFromObjectsLayer(layer: Phaser.Tilemaps.ObjectLayer)
 	{
