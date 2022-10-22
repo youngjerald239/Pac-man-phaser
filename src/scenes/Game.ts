@@ -6,14 +6,15 @@ import { createGhostAnims } from '../game/GhostAnims'
 import '../game/Hero'
 import '../game/Ghost'
 
-import ScatterAI from '../game/ghost-ai/ScatterAI'
-import ChaseHeroAI from '../game/ghost-ai/ChaseHeroAI'
-import InterceptHeroAI from '../game/ghost-ai/InterceptHeroAI'
-import FlankHeroAI from '../game/ghost-ai/FlankHeroAI'
-import PlayfullyChaseHeroAI from '../game/ghost-ai/PlayfullyChaseHeroAI'
-import HeroAI from '../game/HeroAI'
-import Ghost from '../game/Ghost'
+// import ScatterAI from '../game/ghost-ai/ScatterAI'
+// import ChaseHeroAI from '../game/ghost-ai/ChaseHeroAI'
+// import InterceptHeroAI from '../game/ghost-ai/InterceptHeroAI'
+// import FlankHeroAI from '../game/ghost-ai/FlankHeroAI'
+// import PlayfullyChaseHeroAI from '../game/ghost-ai/PlayfullyChaseHeroAI'
+//import HeroAI from '../game/HeroAI'
+//import Ghost from '../game/Ghost'
 import NewGhost from '../game/ghost-ai/NewGhost'
+import ScatterAI from '../game/new-ghost-ai/ScatterAi'
 
 export default class Game extends Phaser.Scene
 {
@@ -72,6 +73,7 @@ export default class Game extends Phaser.Scene
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
 
 		const ghost = new NewGhost(this, 256, 256, this.boardLayer)
+		ghost.setAI(new ScatterAI(0, 0, ghost, this.boardLayer))
 		this.add.existing(ghost)
 
 		ghost.makeRed()
@@ -117,31 +119,31 @@ export default class Game extends Phaser.Scene
 	}
 
 	private createGhosts() {
-		const blinky = this.add.ghost(256, 256)
-			.makeRed()
-			.enableTargetMarker(true)
-		blinky.setAI(new ChaseHeroAI(this.hero!, blinky, this.boardLayer!))
+	// 	const blinky = this.add.ghost(256, 256)
+	// 		.makeRed()
+	// 		.enableTargetMarker(true)
+	// 	blinky.setAI(new ChaseHeroAI(this.hero!, blinky, this.boardLayer!))
 
-		const pinky = this.add.ghost(224, 256)
-			.makePink()
-			.enableTargetMarker(true)
-		pinky.setAI(new InterceptHeroAI(this.hero!, pinky, this.boardLayer!, true))
+	// 	const pinky = this.add.ghost(224, 256)
+	// 		.makePink()
+	// 		.enableTargetMarker(true)
+	// 	pinky.setAI(new InterceptHeroAI(this.hero!, pinky, this.boardLayer!, true))
 
-		const inky = this.add.ghost(288, 256)
-			.makeTeal()
-			.enableTargetMarker(true)
-		inky.setAI(new FlankHeroAI(this.hero!, inky, blinky, this.boardLayer!, true))
+	// 	const inky = this.add.ghost(288, 256)
+	// 		.makeTeal()
+	// 		.enableTargetMarker(true)
+	// 	inky.setAI(new FlankHeroAI(this.hero!, inky, blinky, this.boardLayer!, true))
 
-		const clyde = this.add.ghost(320, 256)
-			.makeOrange()
-			.enableTargetMarker(true)
+	// 	const clyde = this.add.ghost(320, 256)
+	// 		.makeOrange()
+	// 		.enableTargetMarker(true)
 
-		clyde.setAI(new PlayfullyChaseHeroAI(
-			this.hero!,
-			clyde,
-			this.boardLayer!,
-			new ScatterAI(16, this.boardLayer!.height - 16, clyde, this.boardLayer!)
-		))
+	// 	clyde.setAI(new PlayfullyChaseHeroAI(
+	// 		this.hero!,
+	// 		clyde,
+	// 		this.boardLayer!,
+	// 		new ScatterAI(16, this.boardLayer!.height - 16, clyde, this.boardLayer!)
+	// 	))
 	}
 
 
