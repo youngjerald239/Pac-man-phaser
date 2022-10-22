@@ -16,10 +16,18 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
     private board: Phaser.Tilemaps.DynamicTilemapLayer
     private lastTilePosition = new Phaser.Geom.Point(-1, -1)
 
+    private aiBehavior?: IGhostAI
+
     get currentDirection()
     {
         return this._currentDirection
     }
+
+    get physicsBody()
+    {
+        return this.body as Phaser.Physics.Arcade.Body
+    }
+
     constructor(scene: Phaser.Scene, x: Number, y: number, board: Phaser.Tilemaps.DynamicTilemapLayer)
     {
         super(scene, x, y)
@@ -48,6 +56,7 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
 
     setAI(ai: IGhostAI)
     {
+        this.aiBehavior = ai
         return this
     }
     enableTargetMarker(enable: boolean)
@@ -109,7 +118,7 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
 
     preUpdate(t: number, dt: number)
     {
-        if (!this.board)
+        if (!this.board || !this.aiBehavior)
         {
             return
         }
@@ -130,40 +139,9 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
             return
         }
 
-        const tx = this.board.width
-        const ty = this.board.height
-
-        const backwardsDirection = getOppositeDirection(this._currentDirection)
-        const directions = getOrderedDirections(dir => dir !== backwardsDirection)
-
-        let bestDirection = Direction.None
-        let bestDirectionDistance = -1
-
-        for (let i = 0; i < directions.length; ++i)
-        {
-            const dir = directions[i]
-            const pos = positionInDirection(gx, gy, dir)
-
-            if (this.board.getTileAtWorldXY(pos.x, pos.y))
-            {
-                continue
-            }
-            const distance = Phaser.Math.Distance.Between(tx, ty, pos.x, pos.y)
-
-            if (bestDirection === Direction.None)
-            {
-                bestDirection = dir
-                bestDirectionDistance = distance
-                continue
-            }
-
-            if (distance < bestDirectionDistance)
-            {
-                bestDirection = dir
-                bestDirectionDistance = distance
-            }
-        }
-        const speed = 100
+        const bestDirection = this.aiBehavior.pickDirection()
+        const speed = this.aiBehavior.speed
+        
         switch(bestDirection)
         {
             case Direction.Left:
