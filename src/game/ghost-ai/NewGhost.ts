@@ -18,6 +18,8 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
 
     private aiBehavior?: IGhostAI
 
+    private textMarker: Phaser.GameObjects.Text
+
     get currentDirection()
     {
         return this._currentDirection
@@ -52,6 +54,12 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         scene.physics.add.existing(this)
         const body = this.body as Phaser.Physics.Arcade.Body
         body.setCircle(16)
+
+        this.textMarker = scene.add.text(0, 0, 'x')
+            .setOrigin(0.5)
+            .setDepth(1000)
+        
+        this.enableTargetMarker(false)
     }
 
     setAI(ai: IGhostAI)
@@ -61,6 +69,7 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
     }
     enableTargetMarker(enable: boolean)
     {
+        this.textMarker.setVisible(enable)
         return this
     }
 
@@ -122,9 +131,17 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         {
             return
         }
+
+        this.scene.physics.world.wrapObject(this, 32)
+
         const body = this.body as Phaser.Physics.Arcade.Body
         const x = body.position.x
         const y = body.position.y
+
+        if (!this.scene.physics.world.bounds.contains(x, y))
+        {
+            return
+        }
 
         const gx = Math.floor(x/TileSize) * TileSize
         const gy = Math.floor(y/TileSize) * TileSize
@@ -138,6 +155,9 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         {
             return
         }
+
+        body.position.x = gx
+        body.position.y = gy
 
         const bestDirection = this.aiBehavior.pickDirection()
         const speed = this.aiBehavior.speed
@@ -168,5 +188,9 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         this._currentDirection = bestDirection
         this.lastTilePosition.x = gx
         this.lastTilePosition.y = gy
+
+        const {x: mx, y: my} = this.aiBehavior.targetPosition
+        this.textMarker.x = mx
+        this.textMarker.y = my
     }
 }

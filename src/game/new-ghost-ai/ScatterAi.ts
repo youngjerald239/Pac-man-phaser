@@ -5,6 +5,8 @@ import { TileSize } from "../ghost-ai/consts/TileConfig"
 
 import IGhost from "../IGhost"
 
+import determineGhostDirection from "./GhostMovement"
+
 export default class ScatterAI implements IGhostAI
 {
     private ghost: IGhost
@@ -38,40 +40,7 @@ export default class ScatterAI implements IGhostAI
     {
         const {x: tx, y: ty} = this._targetPosition
 
-        const x = this.ghost.physicsBody.position.x
-        const y = this.ghost.physicsBody.position.y
-
-        const backwardsDirection = getOppositeDirection(this.ghost.currentDirection)
-        const directions = getOrderedDirections(dir => dir !== backwardsDirection)
-
-        let bestDirection = Direction.None
-        let bestDirectionDistance = -1
-
-        const gx = Math.floor(x / TileSize) * TileSize
-        const gy = Math.floor(y / TileSize) * TileSize
-
-        for (let i = 0; i < directions.length; ++i) {
-            const dir = directions[i]
-            const pos = positionInDirection(gx, gy, dir)
-
-            if (this.board.getTileAtWorldXY(pos.x, pos.y)) {
-                continue
-            }
-            const distance = Phaser.Math.Distance.Between(tx, ty, pos.x, pos.y)
-
-            if (bestDirection === Direction.None) {
-                bestDirection = dir
-                bestDirectionDistance = distance
-                continue
-            }
-
-            if (distance < bestDirectionDistance) {
-                bestDirection = dir
-                bestDirectionDistance = distance
-            }
-        }
-
-        return bestDirection
+        return determineGhostDirection(tx, ty, this.ghost, this.board)
     } 
 }
 

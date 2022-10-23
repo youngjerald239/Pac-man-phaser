@@ -1,3 +1,4 @@
+
 import Phaser from 'phaser'
 import Hero from '../game/Hero'
 
@@ -15,6 +16,9 @@ import '../game/Ghost'
 //import Ghost from '../game/Ghost'
 import NewGhost from '../game/ghost-ai/NewGhost'
 import ScatterAI from '../game/new-ghost-ai/ScatterAi'
+import ChaseHeroAI from '../game/new-ghost-ai/ChaseHeroAI'
+import InterceptHeroAI from '../game/new-ghost-ai/InterceptHeroAI'
+import FlankHeroAI from '../game/new-ghost-ai/FlankHeroAI'
 
 export default class Game extends Phaser.Scene
 {
@@ -72,11 +76,21 @@ export default class Game extends Phaser.Scene
 
 		this.createFromObjectsLayer(map.getObjectLayer('BoardObjects'))
 
-		const ghost = new NewGhost(this, 256, 256, this.boardLayer)
-		ghost.setAI(new ScatterAI(0, 0, ghost, this.boardLayer))
-		this.add.existing(ghost)
+		const blinky = new NewGhost(this, 288, 256, this.boardLayer)
+			.makeRed()
+			.enableTargetMarker(true)
+		blinky.setAI(new ChaseHeroAI(blinky, this.hero!, this.boardLayer))
+		this.add.existing(blinky)
 
-		ghost.makeRed()
+		const inky = new NewGhost(this, 256, 256, this.boardLayer)
+			.makeTeal()
+			.enableTargetMarker(true)
+		inky.setAI(new FlankHeroAI(inky, this.hero!, blinky, this.boardLayer))
+		this.add.existing(inky)
+
+		//ghost.setAI(new ScatterAI(0, 0, ghost, this.boardLayer))
+		//ghost.setAI(new ChaseHeroAI(ghost, this.hero!, this.boardLayer))
+		//ghost.setAI(new InterceptHeroAI(ghost, this.hero!, this.boardLayer))
 
 		// this.createGhosts()
 
