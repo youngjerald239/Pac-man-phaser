@@ -76,21 +76,25 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
     makeRed()
     {
         this.ghostBody.setTint(0xFF0400)
+        this.textMarker.setColor('#FF0400')
         return this
     }
     makeTeal() 
     {
         this.ghostBody.setTint(0x0CF9E3)
+        this.textMarker.setColor('#0CF9E3')
         return this
     }
     makePink()
     {
         this.ghostBody.setTint(0xFCB4E3)
+        this.textMarker.setColor('#FCB4E3')
         return this
     }
     makeOrange()
     {
         this.ghostBody.setTint(0xFCB72C)
+        this.textMarker.setColor('#FCB72C')
         return this
     }
 
@@ -190,7 +194,7 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         this.lastTilePosition.y = gy
 
         const {x: mx, y: my} = this.aiBehavior.targetPosition
-        this.textMarker.x = mx
-        this.textMarker.y = my
+        this.textMarker.x = mx + 16
+        this.textMarker.y = my - 16
     }
 }
