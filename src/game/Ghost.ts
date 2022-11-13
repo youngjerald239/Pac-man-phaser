@@ -89,6 +89,13 @@ export default class Ghost extends Phaser.GameObjects.Container implements IGhos
 		return this
 	}
 
+	makeGreen() 
+	{
+		this.ghostBody.setTint(0x00ff00)
+		this.targetIndicator.setColor('#00ff00')
+		return this
+	}
+
 	look(direction: Direction)
 	{
 		switch (direction)

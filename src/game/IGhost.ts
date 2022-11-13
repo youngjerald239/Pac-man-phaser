@@ -12,6 +12,7 @@ interface IGhost
 	makeTeal(): IGhost
 	makePink(): IGhost
 	makeOrange(): IGhost
+	makeGreen(): IGhost
 
 	look(direction: Direction): void
 

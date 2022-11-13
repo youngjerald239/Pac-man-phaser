@@ -98,6 +98,12 @@ export default class NewGhost extends Phaser.GameObjects.Container implements IG
         return this
     }
 
+    makeGreen() {
+		this.ghostBody.setTint(0x00ff00)
+		this.textMarker.setColor('#00ff00')
+		return this
+	}
+
     look(direction: Direction)
     {
         switch (direction)
