@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 import { Direction, IGhostAI } from './ghost-ai/IGhostAI'
 import IGhost from './IGhost'
-
+// build for ghost body and color
 export default class Ghost extends Phaser.GameObjects.Container implements IGhost
 {
 	private readonly ghostBody: Phaser.GameObjects.Sprite
@@ -54,13 +54,13 @@ export default class Ghost extends Phaser.GameObjects.Container implements IGhos
 		this.aiBehavior = ai
 		return this
 	}
-
+	// adds the x marker for each ghost
 	enableTargetMarker(enable: boolean)
 	{
 		this.targetIndicator.setVisible(enable)
 		return this
 	}
-
+	// Creates colors for ghosts
 	makeRed()
 	{
 		this.ghostBody.setTint(0xFF0400)

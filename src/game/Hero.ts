@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 import { heroEvents } from '../events/HeroEvents'
 import HeroAI from './HeroAI'
-
+// Keys setup for pacman movement
 enum Moves
 {
 	None,

@@ -72,7 +72,7 @@ export default class Game extends Phaser.Scene
 				repeat: -1
 			})
 		})
-
+		// New Ghost setup under new-ghost-ai folder
 		createHeroAnims(this.anims)
 		createGhostAnims(this.anims)
 
@@ -108,13 +108,15 @@ export default class Game extends Phaser.Scene
 
 		// this.createGhosts()
 
+		// collision with pellets and power pellets.
+		// Enemy collision here?
 		if (this.hero)
 		{
 			this.physics.add.overlap(this.hero, dots, this.handlePlayerEatDot, this.processPlayerEatDot, this)
 			this.physics.add.overlap(this.hero, powerDots, this.handlePlayerEatPowerDot, this.processPlayerEatDot, this)
 		}
 	}
-
+	// States for pellets collision with pac-man
 	private handlePlayerEatPowerDot(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
 	{
 		if (!this.hero)
@@ -145,7 +147,7 @@ export default class Game extends Phaser.Scene
 			this.hero.handleMovement(dt, this.cursors, this.boardLayer)
 		}
 	}
-
+	// Old ghost setup
 	private createGhosts() {
 	// 	const blinky = this.add.ghost(256, 256)
 	// 		.makeRed()

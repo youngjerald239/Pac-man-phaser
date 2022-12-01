@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-
+// animations for pac-man
 const createHeroAnims = (anims: Phaser.Animations.AnimationManager) => {
 	anims.create({
 		key: 'hero-move',
