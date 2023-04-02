@@ -24,6 +24,13 @@ import NewFlankHeroAI from '../game/new-ghost-ai/NewFlankHeroAI'
 
 export default class Game extends Phaser.Scene
 {
+	constructor() {
+		super()
+
+		this.score = 0
+		this.gameOver = false
+	}
+	
 	private hero?: Hero
 	private boardLayer?: Phaser.Tilemaps.DynamicTilemapLayer
 
@@ -102,19 +109,39 @@ export default class Game extends Phaser.Scene
 		clyde.setAI(new PlayfullyChaseHeroAI(clyde, new ChaseHeroAI(clyde, this.hero!, this.boardLayer), new ScatterAI(32, this.boardLayer!.height - 32, clyde, this.boardLayer), this.hero!))
 		this.add.existing(clyde)
 
+		const ghost = this.add.group()
+
+		ghost.add(pinky)
+		ghost.add(blinky)
+		ghost.add(clyde)
+		ghost.add(sneaky)
+
 		//ghost.setAI(new ScatterAI(0, 0, ghost, this.boardLayer))
 		//ghost.setAI(new ChaseHeroAI(ghost, this.hero!, this.boardLayer))
 		//ghost.setAI(new InterceptHeroAI(ghost, this.hero!, this.boardLayer))
 
 		// this.createGhosts()
 
-		// collision with pellets and power pellets.
+		// Score and GameOver screen
+		this.scoreText = this.add.text(16,16, 'score: 0',{fontSize: '32px', fill: 'white'});
+		this.gameOverText = this.add.text(220, 320, 'Game Over', { fontSize: '64px', fill: 'white' })
+		this.gameOverText.setOrigin(.3)
+		this.gameOverText.visible = false
+		
 		// Enemy collision here?
-		if (this.hero)
+		if (this.hero) 
 		{
+			console.log("updating")
 			this.physics.add.overlap(this.hero, dots, this.handlePlayerEatDot, this.processPlayerEatDot, this)
+			console.log("dot")
 			this.physics.add.overlap(this.hero, powerDots, this.handlePlayerEatPowerDot, this.processPlayerEatDot, this)
+			console.log("powerDot")
+			this.physics.add.overlap(this.hero, ghost, this.handleGhostEatPlayer, null, this);
+			console.log("colliding")
+
+			
 		}
+		
 	}
 	// States for pellets collision with pac-man
 	private handlePlayerEatPowerDot(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
@@ -128,6 +155,7 @@ export default class Game extends Phaser.Scene
 
 	private processPlayerEatDot(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
 	{
+		console.log("processed")
 		if (!this.hero)
 		{
 			return false
@@ -137,15 +165,42 @@ export default class Game extends Phaser.Scene
 
 	private handlePlayerEatDot(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
 	{
+		console.log("dot eaten")
 		obj2.destroy(true)
+	}
+
+	private handleGhostEatPlayer(ghost, player)
+	{
+		hitghost = this.ghost
+		if (this.hero.isPowered)
+		{
+			//Delete ghost and increase score
+			console.log("Pacman eats ghost")
+			
+			
+		} else {
+			// Delete pac-man and end game
+			console.log("ghost eats pacman")
+			 
+			hitghost(player, ghost); {
+				this.physics.pause();
+				player.setTint(0xff0000);
+				player.anims.play('turn');
+				this.gameOver = true;
+			}
+		}
+		console.log("ghost hit")
 	}
 	
 	update(t: number, dt: number)
 	{
+		
+		
 		if (this.hero && this.boardLayer)
 		{
 			this.hero.handleMovement(dt, this.cursors, this.boardLayer)
 		}
+		
 	}
 	// Old ghost setup
 	private createGhosts() {
