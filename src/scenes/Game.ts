@@ -171,7 +171,7 @@ export default class Game extends Phaser.Scene
 
 	private handleGhostEatPlayer(ghost, player)
 	{
-		hitghost = this.ghost
+		
 		if (this.hero.isPowered)
 		{
 			//Delete ghost and increase score
@@ -182,12 +182,7 @@ export default class Game extends Phaser.Scene
 			// Delete pac-man and end game
 			console.log("ghost eats pacman")
 			 
-			hitghost(player, ghost); {
-				this.physics.pause();
-				player.setTint(0xff0000);
-				player.anims.play('turn');
-				this.gameOver = true;
-			}
+			
 		}
 		console.log("ghost hit")
 	}
