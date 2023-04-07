@@ -1,7 +1,7 @@
 
 import Phaser from 'phaser'
 import Hero from '../game/Hero'
-
+import GameOver from './GameOver'
 import { createHeroAnims } from '../game/HeroAnims'
 import { createGhostAnims } from '../game/GhostAnims'
 import '../game/Hero'
@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene
 		super()
 
 		this.score = 0
-		this.gameOver = false
+		
 	}
 	
 	private hero?: Hero
@@ -169,20 +169,22 @@ export default class Game extends Phaser.Scene
 		obj2.destroy(true)
 	}
 
-	private handleGhostEatPlayer(ghost, player)
+	private handleGhostEatPlayer(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
 	{
 		
 		if (this.hero.isPowered)
 		{
 			//Delete ghost and increase score
 			console.log("Pacman eats ghost")
-			
+			obj2.destroy(true)
 			
 		} else {
 			// Delete pac-man and end game
 			console.log("ghost eats pacman")
+			obj1.destroy(true)
 			 
-			
+			Phaser.Input.Events.GAME_OVER
+			this.input.on('gameover', GameOver)
 		}
 		console.log("ghost hit")
 	}
@@ -197,34 +199,7 @@ export default class Game extends Phaser.Scene
 		}
 		
 	}
-	// Old ghost setup
-	private createGhosts() {
-	// 	const blinky = this.add.ghost(256, 256)
-	// 		.makeRed()
-	// 		.enableTargetMarker(true)
-	// 	blinky.setAI(new ChaseHeroAI(this.hero!, blinky, this.boardLayer!))
-
-	// 	const pinky = this.add.ghost(224, 256)
-	// 		.makePink()
-	// 		.enableTargetMarker(true)
-	// 	pinky.setAI(new InterceptHeroAI(this.hero!, pinky, this.boardLayer!, true))
-
-	// 	const inky = this.add.ghost(288, 256)
-	// 		.makeTeal()
-	// 		.enableTargetMarker(true)
-	// 	inky.setAI(new FlankHeroAI(this.hero!, inky, blinky, this.boardLayer!, true))
-
-	// 	const clyde = this.add.ghost(320, 256)
-	// 		.makeOrange()
-	// 		.enableTargetMarker(true)
-
-	// 	clyde.setAI(new PlayfullyChaseHeroAI(
-	// 		this.hero!,
-	// 		clyde,
-	// 		this.boardLayer!,
-	// 		new ScatterAI(16, this.boardLayer!.height - 16, clyde, this.boardLayer!)
-	// 	))
-	}
+	
 
 
 	private createFromObjectsLayer(layer: Phaser.Tilemaps.ObjectLayer)
