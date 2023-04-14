@@ -28,7 +28,8 @@ export default class Game extends Phaser.Scene
 		super()
 
 		this.score = 0
-		
+		this.lives = 3
+	
 	}
 	
 	private hero?: Hero
@@ -50,6 +51,7 @@ export default class Game extends Phaser.Scene
     {
 		const map = this.make.tilemap({ key: 'tilemap' })
 		const tileset = map.addTilesetImage('basic_tiles', 'tiles')
+		
 		
 		this.boardLayer = map.createDynamicLayer('Board', tileset)
 			.forEachTile((tile: Phaser.Tilemaps.Tile) => {
@@ -124,6 +126,7 @@ export default class Game extends Phaser.Scene
 
 		// Score and GameOver screen
 		this.scoreText = this.add.text(16,16, 'score: 0',{fontSize: '32px', fill: 'white'});
+		this.lives = this.add.text(16,40, 'lives: 0',{fontSize: '32px', fill: 'white'});
 		this.gameOverText = this.add.text(220, 320, 'Game Over', { fontSize: '64px', fill: 'white' })
 		this.gameOverText.setOrigin(.3)
 		this.gameOverText.visible = false
@@ -181,10 +184,12 @@ export default class Game extends Phaser.Scene
 		} else {
 			// Delete pac-man and end game
 			console.log("ghost eats pacman")
-			obj1.destroy(true)
+			
+				this.scene.start('game-over', {title: 'Game Over'})
+				this.gameOverText.visible = true
+				return
+			
 			 
-			Phaser.Input.Events.GAME_OVER
-			this.input.on('gameover', GameOver)
 		}
 		console.log("ghost hit")
 	}

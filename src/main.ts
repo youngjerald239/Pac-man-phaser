@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 import Preloader from './scenes/Preloader'
 import Game from './scenes/Game'
-
+import GameOver from './scenes/GameOver'
 import SceneKeys from './consts/SceneKeys'
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -26,6 +26,7 @@ const game = new Phaser.Game(config)
 
 game.scene.add(SceneKeys.Preloader, Preloader)
 game.scene.add(SceneKeys.Game, Game)
+game.scene.add(SceneKeys.GameOver, GameOver)
 
 game.scene.start(SceneKeys.Preloader)
 

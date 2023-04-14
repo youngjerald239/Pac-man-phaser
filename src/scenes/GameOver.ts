@@ -1,16 +1,19 @@
+import Phaser from "phaser"
+
 export default class GameOver extends Phaser.Scene {
     constructor() {
         super('game-over')
     }
 
-    create() {
-        const width = this.scale.width
-        const height = this.scale.height
+    create(data: { title: string }) {
 
-        this.add.text(width * 0.5, height * 0.5, 'Game Over press Spacebar to restart', 'press Space', {
-            fontSize: 48
+        const { width, height } = this.scale
+
+        this.add.text(0.5, 0.5, data.title, {
+            fontSize: '48px',
+            color: '#fff',
+            padding: { left: 10, right: 10, top: 10, bottom: 10 }
         })
-            .setOrigin(0.5)
 
         // input to restart after game over
         this.input.keyboard.once('keydown-SPACE', () => {
