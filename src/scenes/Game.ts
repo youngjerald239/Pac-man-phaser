@@ -186,10 +186,14 @@ export default class Game extends Phaser.Scene
 			console.log("ghost eats pacman")
 			
 				this.scene.start('game-over', {title: 'Game Over'})
-				this.gameOverText.visible = true
-				return
-			
-			 
+				// this.gameOverText.visible = true
+				// this.scene.pause()
+				this.input.keyboard.once('keydown-SPACE', () => {
+					console.log('pressed')
+            		this.scene.start('game')
+					
+        			})
+				return	 
 		}
 		console.log("ghost hit")
 	}
