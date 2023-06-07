@@ -12,6 +12,10 @@ const createHeroAnims = (anims: Phaser.Animations.AnimationManager) => {
 		key: 'hero-idle',
 		frames: [{ key: 'game-atlas', frame: 'hero-2.png' }]
 	})
+
+	anims.create({ 
+		key: 'hero-spin', 
+		frames: anims.generateFrameNames('hero', { prefix: 'hero-s', end: 6, zeroPad: 4 }), repeat: -1 })
 }
 
 export default createHeroAnims

@@ -25,12 +25,10 @@ import NewFlankHeroAI from '../game/new-ghost-ai/NewFlankHeroAI'
 export default class Game extends Phaser.Scene
 {
 	constructor() {
-		super()
-
-		this.score = 0
-		this.lives = 3
-	
-	}
+        super({
+            // key: CST.SCENES.PLAY,
+        });
+    }
 	
 	private hero?: Hero
 	private boardLayer?: Phaser.Tilemaps.DynamicTilemapLayer
@@ -45,6 +43,12 @@ export default class Game extends Phaser.Scene
 	preload()
     {
 		this.load.tilemapTiledJSON('tilemap', 'levels/level-1.json')
+		this.score = 0
+		this.lives = 3
+		// this.load.image('bg', 'PauseGame.png'),
+		// this.load.image('playBtn', 'play_button.png'),
+		// this.load.image('optionsBtn', 'options_button.png')
+		
     }
 
     create()
@@ -126,10 +130,11 @@ export default class Game extends Phaser.Scene
 
 		// Score and GameOver screen
 		this.scoreText = this.add.text(16,16, 'score: 0',{fontSize: '32px', fill: 'white'});
-		this.lives = this.add.text(16,40, 'lives: 0',{fontSize: '32px', fill: 'white'});
+		this.lives = this.add.text(16,40, this.lives,{fontSize: '32px', fill: 'white'});
 		this.gameOverText = this.add.text(220, 320, 'Game Over', { fontSize: '64px', fill: 'white' })
 		this.gameOverText.setOrigin(.3)
 		this.gameOverText.visible = false
+		
 		
 		// Enemy collision here?
 		if (this.hero) 
@@ -141,7 +146,7 @@ export default class Game extends Phaser.Scene
 			console.log("powerDot")
 			this.physics.add.overlap(this.hero, ghost, this.handleGhostEatPlayer, null, this);
 			console.log("colliding")
-
+			
 			
 		}
 		
@@ -170,6 +175,7 @@ export default class Game extends Phaser.Scene
 	{
 		console.log("dot eaten")
 		obj2.destroy(true)
+		++this.score
 	}
 
 	private handleGhostEatPlayer(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
@@ -184,15 +190,16 @@ export default class Game extends Phaser.Scene
 		} else {
 			// Delete pac-man and end game
 			console.log("ghost eats pacman")
-			
+				
 				this.scene.start('game-over', {title: 'Game Over'})
+				// Trying to show game over text on game screen here
 				// this.gameOverText.visible = true
 				// this.scene.pause()
-				this.input.keyboard.once('keydown-SPACE', () => {
-					console.log('pressed')
-            		this.scene.start('game')
+				// this.input.keyboard.once('keydown-SPACE', () => {
+				// 	console.log('pressed')
+            	// 	this.scene.start('game')
 					
-        			})
+        		// 	})
 				return	 
 		}
 		console.log("ghost hit")
@@ -205,6 +212,12 @@ export default class Game extends Phaser.Scene
 		if (this.hero && this.boardLayer)
 		{
 			this.hero.handleMovement(dt, this.cursors, this.boardLayer)
+
+			this.input.keyboard.once('keydown-TAB', () => {
+				this.scene.start('PauseGame', {title: 'Paused'})
+				this.scene.pause('game')
+				console.log('paused')
+			})
 		}
 		
 	}

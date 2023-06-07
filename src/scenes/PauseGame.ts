@@ -1,11 +1,11 @@
 import Phaser from "phaser"
 
-export default class GameOver extends Phaser.Scene {
+export default class PauseGame extends Phaser.Scene {
     constructor() {
-        super('game-over')
+        super('pauseGame')
     }
 
-    create(data: { title: string }) {
+    create() {
 
         const { width, height } = this.scale
 
@@ -13,14 +13,15 @@ export default class GameOver extends Phaser.Scene {
             fontSize: '48px',
             color: '#fff',
             padding: { left: 150, right: 10, top: 300, bottom: 10 }
-            
+
         })
-        
-        // input to restart after game over
-        this.input.keyboard.once('keydown-SPACE', () => { 
-            console.log('start-over')
-            this.scene.start('game')
+
+        // input to resume Game
+        this.input.keyboard.once('keydown-TAB', () => {
             
+            this.scene.resume('game')
+            this.scene.stop('pauseGame')
         })
+        console.log('pause')
     }
 }
