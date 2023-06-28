@@ -5,7 +5,7 @@ export default class PauseGame extends Phaser.Scene {
         super('pauseGame')
     }
 
-    create() {
+    create(data: { title: string }) {
 
         const { width, height } = this.scale
 
@@ -16,12 +16,17 @@ export default class PauseGame extends Phaser.Scene {
 
         })
 
-        // input to resume Game
-        this.input.keyboard.once('keydown-TAB', () => {
-            
-            this.scene.resume('game')
-            this.scene.stop('pauseGame')
-        })
-        console.log('pause')
+       
     }
+    update() {
+     // input to resume Game
+        this.input.keyboard.once('keydown-TAB', () => {
+            this.scene.resume('game')
+            // this.scene.switch('game')
+
+
+        })
+        console.log('wake')
+}
+
 }

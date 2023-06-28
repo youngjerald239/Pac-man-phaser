@@ -129,8 +129,7 @@ export default class Game extends Phaser.Scene
 		// this.createGhosts()
 
 		// Score and GameOver screen
-		this.scoreText = this.add.text(16,16, 'score: 0',{fontSize: '32px', fill: 'white'});
-		this.lives = this.add.text(16,40, this.lives,{fontSize: '32px', fill: 'white'});
+		
 		this.gameOverText = this.add.text(220, 320, 'Game Over', { fontSize: '64px', fill: 'white' })
 		this.gameOverText.setOrigin(.3)
 		this.gameOverText.visible = false
@@ -214,8 +213,9 @@ export default class Game extends Phaser.Scene
 			this.hero.handleMovement(dt, this.cursors, this.boardLayer)
 
 			this.input.keyboard.once('keydown-TAB', () => {
-				this.scene.start('PauseGame', {title: 'Paused'})
 				this.scene.pause('game')
+				this.scene.start('pauseGame', {title: 'Paused'})
+				
 				console.log('paused')
 			})
 		}
